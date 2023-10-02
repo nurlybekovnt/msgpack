@@ -7,8 +7,3 @@ import "unsafe"
 func bytesToString(b []byte) string {
 	return unsafe.String(unsafe.SliceData(b), len(b))
 }
-
-// stringToBytes converts string to a byte slice without memory allocation.
-func stringToBytes(s string) []byte {
-	return unsafe.Slice(unsafe.StringData(s), len(s))
-}
