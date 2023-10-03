@@ -16,6 +16,10 @@ func (e Encoder) AppendBytesLen(dst []byte, l int) []byte {
 	return e.append4(dst, msgpcode.Bin32, uint32(l))
 }
 
+func AppendBytesLen(dst []byte, l int) []byte {
+	return DefaultEncoder.AppendBytesLen(dst, l)
+}
+
 func (e Encoder) appendStringLen(dst []byte, l int) []byte {
 	if l < 32 {
 		return e.appendCode(dst, msgpcode.FixedStrLow|byte(l))
@@ -33,6 +37,10 @@ func (e Encoder) AppendString(dst []byte, v string) []byte {
 	return e.appendNormalString(dst, v)
 }
 
+func AppendString(dst []byte, v string) []byte {
+	return DefaultEncoder.AppendString(dst, v)
+}
+
 func (e Encoder) appendNormalString(dst []byte, v string) []byte {
 	dst = e.appendStringLen(dst, len(v))
 	return append(dst, v...)
@@ -46,6 +54,10 @@ func (e Encoder) AppendBytes(dst []byte, v []byte) []byte {
 	return append(dst, v...)
 }
 
+func AppendBytes(dst []byte, v []byte) []byte {
+	return DefaultEncoder.AppendBytes(dst, v)
+}
+
 func (e Encoder) AppendArrayLen(dst []byte, l int) []byte {
 	if l < 16 {
 		return e.appendCode(dst, msgpcode.FixedArrayLow|byte(l))
@@ -54,4 +66,8 @@ func (e Encoder) AppendArrayLen(dst []byte, l int) []byte {
 		return e.append2(dst, msgpcode.Array16, uint16(l))
 	}
 	return e.append4(dst, msgpcode.Array32, uint32(l))
+}
+
+func AppendArrayLen(dst []byte, l int) []byte {
+	return DefaultEncoder.AppendArrayLen(dst, l)
 }

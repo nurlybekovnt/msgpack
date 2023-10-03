@@ -29,6 +29,10 @@ func (e Encoder) AppendTime(dst []byte, tm time.Time) []byte {
 	return binary.BigEndian.AppendUint64(dst, secs)
 }
 
+func AppendTime(dst []byte, tm time.Time) []byte {
+	return DefaultEncoder.AppendTime(dst, tm)
+}
+
 func (e Encoder) appendTimeHdr(dst []byte, timeLen int) []byte {
 	dst = e.appendExtLen(dst, timeLen)
 	return append(dst, byte(timeExtID))

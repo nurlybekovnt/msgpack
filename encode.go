@@ -13,6 +13,9 @@ const (
 	useCompactFloatsFlag
 )
 
+// DefaultEncoder is the default Encoder and is used by Append*.
+var DefaultEncoder = Encoder{}
+
 type Encoder struct {
 	flags uint32
 }
@@ -81,6 +84,10 @@ func (e Encoder) Append(dst []byte, v interface{}) []byte {
 	}
 }
 
+func Append(dst []byte, v interface{}) []byte {
+	return DefaultEncoder.Append(dst, v)
+}
+
 func (e Encoder) AppendMulti(dst []byte, v ...interface{}) []byte {
 	for _, vv := range v {
 		dst = e.Append(dst, vv)
@@ -88,8 +95,16 @@ func (e Encoder) AppendMulti(dst []byte, v ...interface{}) []byte {
 	return nil
 }
 
+func AppendMulti(dst []byte, v ...interface{}) []byte {
+	return DefaultEncoder.AppendMulti(dst, v)
+}
+
 func (e Encoder) AppendNil(dst []byte) []byte {
 	return e.appendCode(dst, msgpcode.Nil)
+}
+
+func AppendNil(dst []byte) []byte {
+	return DefaultEncoder.AppendNil(dst)
 }
 
 func (e Encoder) AppendBool(dst []byte, value bool) []byte {
@@ -99,8 +114,16 @@ func (e Encoder) AppendBool(dst []byte, value bool) []byte {
 	return e.appendCode(dst, msgpcode.False)
 }
 
+func AppendBool(dst []byte, value bool) []byte {
+	return DefaultEncoder.AppendBool(dst, value)
+}
+
 func (e Encoder) AppendDuration(dst []byte, d time.Duration) []byte {
 	return e.AppendInt(dst, int64(d))
+}
+
+func AppendDuration(dst []byte, d time.Duration) []byte {
+	return DefaultEncoder.AppendDuration(dst, d)
 }
 
 func (e Encoder) appendCode(dst []byte, c byte) []byte {

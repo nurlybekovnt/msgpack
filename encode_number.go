@@ -11,9 +11,19 @@ func (e Encoder) AppendUint8(dst []byte, n uint8) []byte {
 	return e.append1(dst, msgpcode.Uint8, n)
 }
 
+// AppendUint8 appends an uint8 in 2 bytes preserving type of the number.
+func AppendUint8(dst []byte, n uint8) []byte {
+	return DefaultEncoder.AppendUint8(dst, n)
+}
+
 // AppendUint16 appends an uint16 in 3 bytes preserving type of the number.
 func (e Encoder) AppendUint16(dst []byte, n uint16) []byte {
 	return e.append2(dst, msgpcode.Uint16, n)
+}
+
+// AppendUint16 appends an uint16 in 3 bytes preserving type of the number.
+func AppendUint16(dst []byte, n uint16) []byte {
+	return DefaultEncoder.AppendUint16(dst, n)
 }
 
 // AppendUint32 appends an uint16 in 5 bytes preserving type of the number.
@@ -21,9 +31,19 @@ func (e Encoder) AppendUint32(dst []byte, n uint32) []byte {
 	return e.append4(dst, msgpcode.Uint32, n)
 }
 
+// AppendUint32 appends an uint16 in 5 bytes preserving type of the number.
+func AppendUint32(dst []byte, n uint32) []byte {
+	return DefaultEncoder.AppendUint32(dst, n)
+}
+
 // AppendUint64 appends an uint16 in 9 bytes preserving type of the number.
 func (e Encoder) AppendUint64(dst []byte, n uint64) []byte {
 	return e.append8(dst, msgpcode.Uint64, n)
+}
+
+// AppendUint64 appends an uint16 in 9 bytes preserving type of the number.
+func AppendUint64(dst []byte, n uint64) []byte {
+	return DefaultEncoder.AppendUint64(dst, n)
 }
 
 func (e Encoder) appendUint64Cond(dst []byte, n uint64) []byte {
@@ -38,9 +58,19 @@ func (e Encoder) AppendInt8(dst []byte, n int8) []byte {
 	return e.append1(dst, msgpcode.Int8, uint8(n))
 }
 
+// AppendInt8 appends an int8 in 2 bytes preserving type of the number.
+func AppendInt8(dst []byte, n int8) []byte {
+	return DefaultEncoder.AppendInt8(dst, n)
+}
+
 // AppendInt16 appends an int16 in 3 bytes preserving type of the number.
 func (e Encoder) AppendInt16(dst []byte, n int16) []byte {
 	return e.append2(dst, msgpcode.Int16, uint16(n))
+}
+
+// AppendInt16 appends an int16 in 3 bytes preserving type of the number.
+func AppendInt16(dst []byte, n int16) []byte {
+	return DefaultEncoder.AppendInt16(dst, n)
 }
 
 // AppendInt32 appends an int32 in 5 bytes preserving type of the number.
@@ -48,9 +78,19 @@ func (e Encoder) AppendInt32(dst []byte, n int32) []byte {
 	return e.append4(dst, msgpcode.Int32, uint32(n))
 }
 
+// AppendInt32 appends an int32 in 5 bytes preserving type of the number.
+func AppendInt32(dst []byte, n int32) []byte {
+	return DefaultEncoder.AppendInt32(dst, n)
+}
+
 // AppendInt64 appends an int64 in 9 bytes preserving type of the number.
 func (e Encoder) AppendInt64(dst []byte, n int64) []byte {
 	return e.append8(dst, msgpcode.Int64, uint64(n))
+}
+
+// AppendInt64 appends an int64 in 9 bytes preserving type of the number.
+func AppendInt64(dst []byte, n int64) []byte {
+	return DefaultEncoder.AppendInt64(dst, n)
 }
 
 func (e Encoder) appendInt64Cond(dst []byte, n int64) []byte {
@@ -78,6 +118,12 @@ func (e Encoder) AppendUint(dst []byte, n uint64) []byte {
 	return e.AppendUint64(dst, n)
 }
 
+// AppendUnsignedNumber appends an uint64 in 1, 2, 3, 5, or 9 bytes. Type of the
+// number is lost during encoding.
+func AppendUint(dst []byte, n uint64) []byte {
+	return DefaultEncoder.AppendUint(dst, n)
+}
+
 // AppendNumber appends an int64 in 1, 2, 3, 5, or 9 bytes. Type of the number
 // is lost during encoding.
 func (e Encoder) AppendInt(dst []byte, n int64) []byte {
@@ -99,6 +145,12 @@ func (e Encoder) AppendInt(dst []byte, n int64) []byte {
 	return e.AppendInt64(dst, n)
 }
 
+// AppendNumber appends an int64 in 1, 2, 3, 5, or 9 bytes. Type of the number
+// is lost during encoding.
+func AppendInt(dst []byte, n int64) []byte {
+	return DefaultEncoder.AppendInt(dst, n)
+}
+
 func (e Encoder) AppendFloat32(dst []byte, n float32) []byte {
 	if e.flags&useCompactFloatsFlag != 0 {
 		if float32(int64(n)) == n {
@@ -106,6 +158,10 @@ func (e Encoder) AppendFloat32(dst []byte, n float32) []byte {
 		}
 	}
 	return e.append4(dst, msgpcode.Float, math.Float32bits(n))
+}
+
+func AppendFloat32(dst []byte, n float32) []byte {
+	return DefaultEncoder.AppendFloat32(dst, n)
 }
 
 func (e Encoder) AppendFloat64(dst []byte, n float64) []byte {
@@ -119,6 +175,10 @@ func (e Encoder) AppendFloat64(dst []byte, n float64) []byte {
 		}
 	}
 	return e.append8(dst, msgpcode.Double, math.Float64bits(n))
+}
+
+func AppendFloat64(dst []byte, n float64) []byte {
+	return DefaultEncoder.AppendFloat64(dst, n)
 }
 
 func (e Encoder) append1(dst []byte, code byte, n uint8) []byte {

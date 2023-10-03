@@ -19,6 +19,10 @@ func (e Encoder) AppendMap(dst []byte, m map[string]interface{}) []byte {
 	return nil
 }
 
+func AppendMap(dst []byte, m map[string]interface{}) []byte {
+	return DefaultEncoder.AppendMap(dst, m)
+}
+
 func (e Encoder) AppendMapSorted(dst []byte, m map[string]interface{}) []byte {
 	if m == nil {
 		return e.AppendNil(dst)
@@ -41,6 +45,10 @@ func (e Encoder) AppendMapSorted(dst []byte, m map[string]interface{}) []byte {
 	return nil
 }
 
+func AppendMapSorted(dst []byte, m map[string]interface{}) []byte {
+	return DefaultEncoder.AppendMapSorted(dst, m)
+}
+
 func (e Encoder) AppendMapLen(dst []byte, l int) []byte {
 	if l < 16 {
 		return e.appendCode(dst, msgpcode.FixedMapLow|byte(l))
@@ -49,4 +57,8 @@ func (e Encoder) AppendMapLen(dst []byte, l int) []byte {
 		return e.append2(dst, msgpcode.Map16, uint16(l))
 	}
 	return e.append4(dst, msgpcode.Map32, uint32(l))
+}
+
+func AppendMapLen(dst []byte, l int) []byte {
+	return DefaultEncoder.AppendMapLen(dst, l)
 }

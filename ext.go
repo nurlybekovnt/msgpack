@@ -12,6 +12,10 @@ func (e Encoder) AppendExtHeader(dst []byte, extID int8, extLen int) []byte {
 	return append(dst, byte(extID))
 }
 
+func AppendExtHeader(dst []byte, extID int8, extLen int) []byte {
+	return DefaultEncoder.AppendExtHeader(dst, extID, extLen)
+}
+
 func (e Encoder) appendExtLen(dst []byte, l int) []byte {
 	switch l {
 	case 1:
