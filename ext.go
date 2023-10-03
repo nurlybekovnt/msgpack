@@ -7,12 +7,12 @@ import (
 	"github.com/nurlybekovnt/msgpack/msgpcode"
 )
 
-func (e *Encoder) AppendExtHeader(dst []byte, extID int8, extLen int) []byte {
+func (e Encoder) AppendExtHeader(dst []byte, extID int8, extLen int) []byte {
 	dst = e.appendExtLen(dst, extLen)
 	return append(dst, byte(extID))
 }
 
-func (e *Encoder) appendExtLen(dst []byte, l int) []byte {
+func (e Encoder) appendExtLen(dst []byte, l int) []byte {
 	switch l {
 	case 1:
 		return e.appendCode(dst, msgpcode.FixExt1)

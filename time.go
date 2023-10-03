@@ -10,7 +10,7 @@ import (
 
 var timeExtID int8 = -1
 
-func (e *Encoder) AppendTime(dst []byte, tm time.Time) []byte {
+func (e Encoder) AppendTime(dst []byte, tm time.Time) []byte {
 	secs := uint64(tm.Unix())
 	if secs>>34 == 0 {
 		data := uint64(tm.Nanosecond())<<34 | secs
@@ -29,7 +29,7 @@ func (e *Encoder) AppendTime(dst []byte, tm time.Time) []byte {
 	return binary.BigEndian.AppendUint64(dst, secs)
 }
 
-func (e *Encoder) appendTimeHdr(dst []byte, timeLen int) []byte {
+func (e Encoder) appendTimeHdr(dst []byte, timeLen int) []byte {
 	dst = e.appendExtLen(dst, timeLen)
 	return append(dst, byte(timeExtID))
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/nurlybekovnt/msgpack/msgpcode"
 )
 
-func (e *Encoder) AppendMap(dst []byte, m map[string]interface{}) []byte {
+func (e Encoder) AppendMap(dst []byte, m map[string]interface{}) []byte {
 	if m == nil {
 		return e.AppendNil(dst)
 	}
@@ -19,7 +19,7 @@ func (e *Encoder) AppendMap(dst []byte, m map[string]interface{}) []byte {
 	return nil
 }
 
-func (e *Encoder) AppendMapSorted(dst []byte, m map[string]interface{}) []byte {
+func (e Encoder) AppendMapSorted(dst []byte, m map[string]interface{}) []byte {
 	if m == nil {
 		return e.AppendNil(dst)
 	}
@@ -41,7 +41,7 @@ func (e *Encoder) AppendMapSorted(dst []byte, m map[string]interface{}) []byte {
 	return nil
 }
 
-func (e *Encoder) AppendMapLen(dst []byte, l int) []byte {
+func (e Encoder) AppendMapLen(dst []byte, l int) []byte {
 	if l < 16 {
 		return e.appendCode(dst, msgpcode.FixedMapLow|byte(l))
 	}

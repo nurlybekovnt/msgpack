@@ -50,7 +50,7 @@ func (e *Encoder) UseCompactFloats(on bool) {
 	}
 }
 
-func (e *Encoder) Append(dst []byte, v interface{}) []byte {
+func (e Encoder) Append(dst []byte, v interface{}) []byte {
 	switch v := v.(type) {
 	case nil:
 		return e.AppendNil(dst)
@@ -81,28 +81,28 @@ func (e *Encoder) Append(dst []byte, v interface{}) []byte {
 	}
 }
 
-func (e *Encoder) AppendMulti(dst []byte, v ...interface{}) []byte {
+func (e Encoder) AppendMulti(dst []byte, v ...interface{}) []byte {
 	for _, vv := range v {
 		dst = e.Append(dst, vv)
 	}
 	return nil
 }
 
-func (e *Encoder) AppendNil(dst []byte) []byte {
+func (e Encoder) AppendNil(dst []byte) []byte {
 	return e.appendCode(dst, msgpcode.Nil)
 }
 
-func (e *Encoder) AppendBool(dst []byte, value bool) []byte {
+func (e Encoder) AppendBool(dst []byte, value bool) []byte {
 	if value {
 		return e.appendCode(dst, msgpcode.True)
 	}
 	return e.appendCode(dst, msgpcode.False)
 }
 
-func (e *Encoder) AppendDuration(dst []byte, d time.Duration) []byte {
+func (e Encoder) AppendDuration(dst []byte, d time.Duration) []byte {
 	return e.AppendInt(dst, int64(d))
 }
 
-func (e *Encoder) appendCode(dst []byte, c byte) []byte {
+func (e Encoder) appendCode(dst []byte, c byte) []byte {
 	return append(dst, c)
 }
