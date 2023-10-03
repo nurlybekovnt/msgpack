@@ -102,6 +102,54 @@ func (d *Decoder) bytes(c byte) ([]byte, error) {
 	}
 }
 
+func (d *Decoder) decodeBytesPtr(ptr *[]byte) error {
+	c, err := d.readCode()
+	if err != nil {
+		return err
+	}
+	return d.bytesPtr(c, ptr)
+}
+
+func (d *Decoder) bytesPtr(c byte, ptr *[]byte) error {
+	n, err := d.bytesLen(c)
+	if err != nil {
+		return err
+	}
+	if n == -1 {
+		*ptr = nil
+		return nil
+	}
+
+	b, err := d.readN(n)
+	if err != nil {
+		return err
+	}
+
+	if d.unsafeDecoding() {
+		*ptr = b
+	} else {
+		bb := makeBytes(*ptr, len(b))
+		copy(bb, b)
+		*ptr = bb
+	}
+
+	return nil
+}
+
+func makeBytes(b []byte, n int) []byte {
+	if b == nil {
+		return make([]byte, 0, n)
+	}
+
+	if cap(b) >= n {
+		return b[:0]
+	}
+
+	b = b[:cap(b)]
+	b = append(b, make([]byte, n-len(b))...)
+	return b[:0]
+}
+
 func (d *Decoder) skipBytes(c byte) error {
 	n, err := d.bytesLen(c)
 	if err != nil {

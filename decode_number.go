@@ -71,6 +71,11 @@ func (d *Decoder) uint64() (uint64, error) {
 	return n, nil
 }
 
+func (d *Decoder) int64() (int64, error) {
+	n, err := d.uint64()
+	return int64(n), err
+}
+
 // DecodeUint64 decodes msgpack int8/16/32/64 and uint8/16/32/64
 // into Go uint64.
 func (d *Decoder) DecodeUint64() (uint64, error) {

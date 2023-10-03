@@ -71,3 +71,16 @@ func (e Encoder) AppendArrayLen(dst []byte, l int) []byte {
 func AppendArrayLen(dst []byte, l int) []byte {
 	return DefaultEncoder.AppendArrayLen(dst, l)
 }
+
+func (e Encoder) AppendStringSlice(dst []byte, s []string) []byte {
+	if s == nil {
+		return e.AppendNil(dst)
+	}
+
+	dst = e.AppendArrayLen(dst, len(s))
+	for _, v := range s {
+		dst = e.AppendString(dst, v)
+	}
+
+	return dst
+}

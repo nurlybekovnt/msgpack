@@ -79,6 +79,20 @@ func (e Encoder) Append(dst []byte, v interface{}) []byte {
 		return e.appendInt64Cond(dst, int64(v))
 	case time.Time:
 		return e.AppendTime(dst, v)
+	case []string:
+		return e.AppendStringSlice(dst, v)
+	case map[string]string:
+		if e.flags&sortMapKeysFlag != 0 {
+			return e.appendSortedMapStringString(dst, v)
+		} else {
+			return e.appendMapStringString(dst, v)
+		}
+	case map[string]interface{}:
+		if e.flags&sortMapKeysFlag != 0 {
+			return e.AppendMapSorted(dst, v)
+		} else {
+			return e.AppendMap(dst, v)
+		}
 	default:
 		panic(fmt.Errorf("unsupported type: %T", v))
 	}
