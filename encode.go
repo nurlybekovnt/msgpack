@@ -24,13 +24,12 @@ type Encoder struct {
 // Supported map types are:
 //   - map[string]string
 //   - map[string]interface{}
-func (e *Encoder) SetSortMapKeys(on bool) *Encoder {
+func (e *Encoder) SetSortMapKeys(on bool) {
 	if on {
 		e.flags |= sortMapKeysFlag
 	} else {
 		e.flags &= ^sortMapKeysFlag
 	}
-	return e
 }
 
 // UseCompactEncoding causes the Encoder to chose the most compact encoding. For
@@ -63,10 +62,22 @@ func (e Encoder) Append(dst []byte, v interface{}) []byte {
 		return e.AppendBytes(dst, v)
 	case int:
 		return e.AppendInt(dst, int64(v))
+	case int8:
+		return e.appendInt8Cond(dst, v)
+	case int16:
+		return e.appendInt16Cond(dst, v)
+	case int32:
+		return e.appendInt32Cond(dst, v)
 	case int64:
 		return e.appendInt64Cond(dst, v)
 	case uint:
 		return e.AppendUint(dst, uint64(v))
+	case uint8:
+		return e.appendUint8Cond(dst, v)
+	case uint16:
+		return e.appendUint16Cond(dst, v)
+	case uint32:
+		return e.appendUint32Cond(dst, v)
 	case uint64:
 		return e.appendUint64Cond(dst, v)
 	case bool:

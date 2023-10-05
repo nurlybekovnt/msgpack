@@ -16,6 +16,13 @@ func AppendUint8(dst []byte, n uint8) []byte {
 	return DefaultEncoder.AppendUint8(dst, n)
 }
 
+func (e Encoder) appendUint8Cond(dst []byte, n uint8) []byte {
+	if e.flags&useCompactIntsFlag != 0 {
+		return e.AppendUint(dst, uint64(n))
+	}
+	return e.AppendUint8(dst, n)
+}
+
 // AppendUint16 appends an uint16 in 3 bytes preserving type of the number.
 func (e Encoder) AppendUint16(dst []byte, n uint16) []byte {
 	return e.append2(dst, msgpcode.Uint16, n)
@@ -26,6 +33,13 @@ func AppendUint16(dst []byte, n uint16) []byte {
 	return DefaultEncoder.AppendUint16(dst, n)
 }
 
+func (e Encoder) appendUint16Cond(dst []byte, n uint16) []byte {
+	if e.flags&useCompactIntsFlag != 0 {
+		return e.AppendUint(dst, uint64(n))
+	}
+	return e.AppendUint16(dst, n)
+}
+
 // AppendUint32 appends an uint16 in 5 bytes preserving type of the number.
 func (e Encoder) AppendUint32(dst []byte, n uint32) []byte {
 	return e.append4(dst, msgpcode.Uint32, n)
@@ -34,6 +48,13 @@ func (e Encoder) AppendUint32(dst []byte, n uint32) []byte {
 // AppendUint32 appends an uint16 in 5 bytes preserving type of the number.
 func AppendUint32(dst []byte, n uint32) []byte {
 	return DefaultEncoder.AppendUint32(dst, n)
+}
+
+func (e Encoder) appendUint32Cond(dst []byte, n uint32) []byte {
+	if e.flags&useCompactIntsFlag != 0 {
+		return e.AppendUint(dst, uint64(n))
+	}
+	return e.AppendUint32(dst, n)
 }
 
 // AppendUint64 appends an uint16 in 9 bytes preserving type of the number.
@@ -63,6 +84,13 @@ func AppendInt8(dst []byte, n int8) []byte {
 	return DefaultEncoder.AppendInt8(dst, n)
 }
 
+func (e Encoder) appendInt8Cond(dst []byte, n int8) []byte {
+	if e.flags&useCompactIntsFlag != 0 {
+		return e.AppendInt(dst, int64(n))
+	}
+	return e.AppendInt8(dst, n)
+}
+
 // AppendInt16 appends an int16 in 3 bytes preserving type of the number.
 func (e Encoder) AppendInt16(dst []byte, n int16) []byte {
 	return e.append2(dst, msgpcode.Int16, uint16(n))
@@ -73,6 +101,13 @@ func AppendInt16(dst []byte, n int16) []byte {
 	return DefaultEncoder.AppendInt16(dst, n)
 }
 
+func (e Encoder) appendInt16Cond(dst []byte, n int16) []byte {
+	if e.flags&useCompactIntsFlag != 0 {
+		return e.AppendInt(dst, int64(n))
+	}
+	return e.AppendInt16(dst, n)
+}
+
 // AppendInt32 appends an int32 in 5 bytes preserving type of the number.
 func (e Encoder) AppendInt32(dst []byte, n int32) []byte {
 	return e.append4(dst, msgpcode.Int32, uint32(n))
@@ -81,6 +116,13 @@ func (e Encoder) AppendInt32(dst []byte, n int32) []byte {
 // AppendInt32 appends an int32 in 5 bytes preserving type of the number.
 func AppendInt32(dst []byte, n int32) []byte {
 	return DefaultEncoder.AppendInt32(dst, n)
+}
+
+func (e Encoder) appendInt32Cond(dst []byte, n int32) []byte {
+	if e.flags&useCompactIntsFlag != 0 {
+		return e.AppendInt(dst, int64(n))
+	}
+	return e.AppendInt32(dst, n)
 }
 
 // AppendInt64 appends an int64 in 9 bytes preserving type of the number.
